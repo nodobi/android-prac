@@ -6,7 +6,6 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.design_pattern_prac.adapter.ImageAdapter
-import com.example.design_pattern_prac.data.ImageItem
 import com.example.design_pattern_prac.data.ImageData
 import com.example.design_pattern_prac.presenter.MainContract
 import com.example.design_pattern_prac.presenter.MainPresenter
@@ -19,7 +18,7 @@ class MainActivity : AppCompatActivity(), MainContract.View{
         findViewById<RecyclerView>(R.id.recycler_view)
     }
 
-    private var imageAdapter: ImageAdapter? = null
+    private lateinit var imageAdapter: ImageAdapter
     private lateinit var presenter: MainPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,15 +27,15 @@ class MainActivity : AppCompatActivity(), MainContract.View{
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        presenter = MainPresenter().apply {
-            view = this@MainActivity
-            imageData = ImageData
-        }
-        presenter.view = this
-
         imageAdapter = ImageAdapter(this)
         recyclerView.adapter = imageAdapter
 
+        presenter = MainPresenter().apply {
+            view = this@MainActivity
+            imageData = ImageData
+            adapterView = imageAdapter
+            adapterModel = imageAdapter
+        }
 
         val fab = findViewById(R.id.fab) as FloatingActionButton
         fab.setOnClickListener { view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show() }
@@ -64,18 +63,4 @@ class MainActivity : AppCompatActivity(), MainContract.View{
 
         return super.onOptionsItemSelected(item)
     }
-
-    override fun updateItems(items: ArrayList<ImageItem>?, isClear: Boolean) {
-        imageAdapter?.apply {
-            if(isClear) {
-                imageAdapter?.imageList = null
-            }
-            imageList = items
-        }
-    }
-
-    override fun notifyAdapter() {
-        imageAdapter?.notifyDataSetChanged()
-    }
-
 }

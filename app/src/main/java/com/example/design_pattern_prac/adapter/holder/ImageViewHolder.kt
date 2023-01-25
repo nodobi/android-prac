@@ -1,4 +1,4 @@
-package com.example.design_pattern_prac.adapter
+package com.example.design_pattern_prac.adapter.holder
 
 import android.view.View
 import android.widget.ImageView

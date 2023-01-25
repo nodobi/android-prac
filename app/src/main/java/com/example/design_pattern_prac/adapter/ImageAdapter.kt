@@ -10,10 +10,14 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.design_pattern_prac.R
+import com.example.design_pattern_prac.adapter.contract.ImageAdapterContract
+import com.example.design_pattern_prac.adapter.holder.ImageViewHolder
 import com.example.design_pattern_prac.data.ImageItem
 import java.lang.ref.WeakReference
 
-class ImageAdapter(val context: Context) : RecyclerView.Adapter<ImageViewHolder>() {
+class ImageAdapter(val context: Context) : RecyclerView.Adapter<ImageViewHolder>(),
+    ImageAdapterContract.Model,
+    ImageAdapterContract.View {
 
     var imageList: ArrayList<ImageItem>? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
@@ -57,5 +61,17 @@ class ImageAdapter(val context: Context) : RecyclerView.Adapter<ImageViewHolder>
             result?.let { imageViewReference.get()?.setImageBitmap(result)}
         }
 
+    }
+
+    override fun notifyAdapter() {
+        notifyDataSetChanged()
+    }
+
+    override fun updateItems(items: ArrayList<ImageItem>?) {
+        this.imageList = items
+    }
+
+    override fun clearItems() {
+        imageList?.clear()
     }
 }
