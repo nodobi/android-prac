@@ -3,12 +3,15 @@ package com.example.design_pattern_prac.view.main.presenter
 import android.content.Context
 import com.example.design_pattern_prac.adapter.contract.ImageAdapterContract
 import com.example.design_pattern_prac.data.ImageData
+import com.example.design_pattern_prac.data.ImageItem
+import com.example.design_pattern_prac.data.source.image.SampleImageRepository
+import com.example.design_pattern_prac.data.source.image.SampleImageSource
 
 class MainPresenter :
     MainContract.Presenter {
 
     override lateinit var view: MainContract.View
-    override lateinit var imageData: ImageData
+    override lateinit var sampleImageRepository: SampleImageRepository
 
     override lateinit var adapterModel: ImageAdapterContract.Model
     override var adapterView: ImageAdapterContract.View? = null
@@ -18,11 +21,15 @@ class MainPresenter :
         }
 
     override fun loadItems(context: Context, isClear: Boolean) {
-        if(isClear) {
-            adapterModel.clearItems()
-        }
-        adapterModel.updateItems(imageData.getSampleList(context, 10))
-        adapterView?.notifyAdapter()
+        sampleImageRepository.loadItems(context, 10, object: SampleImageSource.LoadImageCallback {
+            override fun onLoadImage(list: ArrayList<ImageItem>) {
+                if(isClear) {
+                    adapterModel.clearItems()
+                }
+                adapterModel.updateItems(list)
+                adapterView?.notifyAdapter()
+            }
+        })
     }
 
     private fun onClickListener(position: Int) {

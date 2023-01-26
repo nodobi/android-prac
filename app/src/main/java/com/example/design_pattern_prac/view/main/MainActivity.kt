@@ -1,6 +1,7 @@
 package com.example.design_pattern_prac.view.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.design_pattern_prac.R
 import com.example.design_pattern_prac.adapter.ImageAdapter
 import com.example.design_pattern_prac.data.ImageData
+import com.example.design_pattern_prac.data.source.image.SampleImageRepository
 import com.example.design_pattern_prac.view.main.presenter.MainContract
 import com.example.design_pattern_prac.view.main.presenter.MainPresenter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -34,7 +36,7 @@ class MainActivity : AppCompatActivity(), MainContract.View{
 
         presenter = MainPresenter().apply {
             view = this@MainActivity
-            imageData = ImageData
+            sampleImageRepository = SampleImageRepository()
             adapterView = imageAdapter
             adapterModel = imageAdapter
         }
