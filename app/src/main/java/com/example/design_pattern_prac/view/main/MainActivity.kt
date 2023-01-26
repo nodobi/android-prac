@@ -1,14 +1,16 @@
-package com.example.design_pattern_prac
+package com.example.design_pattern_prac.view.main
 
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.design_pattern_prac.R
 import com.example.design_pattern_prac.adapter.ImageAdapter
 import com.example.design_pattern_prac.data.ImageData
-import com.example.design_pattern_prac.presenter.MainContract
-import com.example.design_pattern_prac.presenter.MainPresenter
+import com.example.design_pattern_prac.view.main.presenter.MainContract
+import com.example.design_pattern_prac.view.main.presenter.MainPresenter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
@@ -41,6 +43,10 @@ class MainActivity : AppCompatActivity(), MainContract.View{
         fab.setOnClickListener { view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show() }
 
         presenter.loadItems(this, false)
+    }
+
+    override fun showToast(title: String) {
+        Toast.makeText(this, "show $title", Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

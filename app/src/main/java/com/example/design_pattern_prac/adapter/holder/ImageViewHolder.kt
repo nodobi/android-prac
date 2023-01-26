@@ -5,14 +5,25 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.design_pattern_prac.R
+import com.example.design_pattern_prac.data.ImageItem
+import com.example.design_pattern_prac.util.ImageAsync
 
-class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ImageViewHolder(itemView: View, var onClickFunc: ((Int) -> Unit)?) : RecyclerView.ViewHolder(itemView) {
 
-    val imageview by lazy {
+    val imageView by lazy {
         itemView.findViewById(R.id.img_view) as ImageView
     }
 
     val textView by lazy {
         itemView.findViewById(R.id.text) as TextView
+    }
+
+    fun onBind(item: ImageItem, position: Int) {
+        ImageAsync(imageView.context, imageView).execute(item.resource)
+        textView.text = item.title
+
+        itemView.setOnClickListener {
+            onClickFunc?.invoke(position)
+        }
     }
 }
