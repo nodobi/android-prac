@@ -8,4 +8,6 @@ Taehwan 님의 [Android MVP 무작정 따라하기]() 를 따라 챕터별 브�
   - 기존 MVC 패턴에서 GoogleArchicture를 따라 Contract, Presenter 를 추가
 - [02-Adapter](https://github.com/nodobi/design-patterns/tree/02-Adapter)
   - AdapterContract 를 추가하여 Presenter 가 View를 통해 Adapter에 접근하는 것이 아닌 직접 접근 하도록 하였음
+- [03-onClick](https://github.com/nodobi/android-architecture-prac/tree/03-onClick)
+  - 람다식을 활용한 onClickFunc 를 ImageAdapterContract 에 추가하여 이벤트 처리를 MainPresenter 에서 할 수 있도록 하였음
   
