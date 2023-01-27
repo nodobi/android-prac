@@ -9,7 +9,7 @@ interface MainContract {
     }
 
     interface Presenter {
-        var view: MainContract.View
+        var view: View
         var onNavItemSelectFunc: ((MenuItem) -> Boolean)
     }
 }
