@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mvp_fragment.R
 import com.example.mvp_fragment.data.source.note.NoteRepository
 import com.example.mvp_fragment.data.source.note.local.NoteDatabase
 import com.example.mvp_fragment.data.source.note.local.NoteLocalDataSource
 import com.example.mvp_fragment.databinding.FragmentNoteBinding
+import com.example.mvp_fragment.view.addnote.AddNoteFragment
 import com.example.mvp_fragment.view.note.adapter.NoteAdapter
 import com.example.mvp_fragment.view.note.contract.NoteContract
 import com.example.mvp_fragment.view.note.contract.NotePresenter
@@ -43,6 +45,8 @@ class NoteFragment : Fragment(), NoteContract.View {
             }
         }
 
+        binding.fabNoteAdd.setOnClickListener(notePresenter.onFabClickFunc)
+
         notePresenter.loadNoteList()
     }
 
@@ -52,5 +56,14 @@ class NoteFragment : Fragment(), NoteContract.View {
         savedInstanceState: Bundle?
     ): View {
         return binding.root
+    }
+
+    override fun changeFragment(fragment: Fragment) {
+        parentFragmentManager.popBackStack()
+        parentFragmentManager.beginTransaction().run {
+            replace(R.id.fragment_container, AddNoteFragment())
+            addToBackStack(null)
+            commit()
+        }
     }
 }
