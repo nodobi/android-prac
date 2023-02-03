@@ -8,6 +8,7 @@ import com.example.mvp_fragment.view.note.adapter.NoteAdapterContract
 interface NoteContract {
     interface View {
         fun changeFragment(fragment: Fragment)
+        fun registerFragmentResultListener(requestKey: String, listener: ((String, Bundle) -> Unit))
         fun showToast(text: String)
         fun showAddError()
         fun showAddSucess()
@@ -16,13 +17,13 @@ interface NoteContract {
 
     interface Presenter {
         var view: View
-        var noteAdapterView: NoteAdapterContract.View
+        var noteAdapterView: NoteAdapterContract.View?
         var noteAdapterModel: NoteAdapterContract.Model
         var noteRepository: NoteRepository
 
         var onFabClickFunc: ((android.view.View) -> Unit)?
-        var fragmentResultFunc: ((String, Bundle) -> Unit)?
 
         fun loadNoteList()
+        fun initFragmentResultListener()
     }
 }

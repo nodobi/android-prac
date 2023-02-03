@@ -14,7 +14,6 @@ import com.example.mvp_fragment.data.source.note.NoteRepository
 import com.example.mvp_fragment.data.source.note.local.NoteDatabase
 import com.example.mvp_fragment.data.source.note.local.NoteLocalDataSource
 import com.example.mvp_fragment.databinding.FragmentNoteBinding
-import com.example.mvp_fragment.view.addnote.AddNoteFragment
 import com.example.mvp_fragment.view.note.adapter.NoteAdapter
 import com.example.mvp_fragment.view.note.contract.NoteContract
 import com.example.mvp_fragment.view.note.contract.NotePresenter
@@ -49,9 +48,7 @@ class NoteFragment : Fragment(), NoteContract.View {
 
         binding.fabNoteAdd.setOnClickListener(notePresenter.onFabClickFunc)
 
-        setFragmentResultListener(AddNoteFragment.REQUEST_ADD_NOTE) { requestKey, bundle ->
-            notePresenter.fragmentResultFunc?.invoke(requestKey, bundle)
-        }
+        notePresenter.initFragmentResultListener()
 
         notePresenter.loadNoteList()
 
@@ -68,10 +65,17 @@ class NoteFragment : Fragment(), NoteContract.View {
     override fun changeFragment(fragment: Fragment) {
         parentFragmentManager.popBackStack()
         parentFragmentManager.beginTransaction().run {
-            replace(R.id.fragment_container, AddNoteFragment())
+            replace(R.id.fragment_container, fragment)
             addToBackStack(null)
             commit()
         }
+    }
+
+    override fun registerFragmentResultListener(
+        requestKey: String,
+        listener: (String, Bundle) -> Unit
+    ) {
+        setFragmentResultListener(requestKey, listener)
     }
 
     override fun showToast(text: String) {

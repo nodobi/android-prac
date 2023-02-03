@@ -7,6 +7,8 @@ interface NoteAdapterContract {
         fun updateNoteList(noteList: List<NoteItem>)
     }
     interface View {
+        var onItemClick: ((String) -> Unit)?
+
         fun notifyAdapter()
     }
 }

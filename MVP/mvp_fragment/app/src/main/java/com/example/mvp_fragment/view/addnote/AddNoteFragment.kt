@@ -2,10 +2,10 @@ package com.example.mvp_fragment.view.addnote
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import com.example.mvp_fragment.R
-import com.example.mvp_fragment.data.NoteItem
 import com.example.mvp_fragment.data.source.note.NoteRepository
 import com.example.mvp_fragment.data.source.note.local.NoteDatabase
 import com.example.mvp_fragment.data.source.note.local.NoteLocalDataSource
@@ -13,7 +13,7 @@ import com.example.mvp_fragment.databinding.FragmentAddnoteBinding
 import com.example.mvp_fragment.view.addnote.contract.AddNoteContract
 import com.example.mvp_fragment.view.addnote.contract.AddNotePresenter
 
-class AddNoteFragment : Fragment(), AddNoteContract.View {
+class AddNoteFragment(val noteId: String?) : Fragment(), AddNoteContract.View {
     companion object {
         val RESULT_OK = 1
         val RESULT_CANDELED = 0
@@ -29,6 +29,7 @@ class AddNoteFragment : Fragment(), AddNoteContract.View {
 
         addNotePresenter = AddNotePresenter().apply {
             view = this@AddNoteFragment
+            noteId = this@AddNoteFragment.noteId
             noteRepository = NoteRepository.apply {
                 noteLocalDataSource = NoteLocalDataSource.apply {
                     noteDao = NoteDatabase.getInstance(requireContext()).noteDao()
@@ -38,19 +39,26 @@ class AddNoteFragment : Fragment(), AddNoteContract.View {
 
         binding.toolbarAddnote.apply {
             setNavigationOnClickListener {
-                addNotePresenter.onNavClickFunc
+                addNotePresenter.onNavClickFunc?.invoke(Unit)
             }
             setOnMenuItemClickListener {
                 addNotePresenter.onToolbarItemClickFunc?.invoke(
-                    NoteItem(
-                        binding.edittextAddnoteTitle.text.toString(),
-                        binding.edittextAddnoteDetail.text.toString()
-                    )
+                    binding.edittextAddnoteTitle.text.toString(),
+                    binding.edittextAddnoteDetail.text.toString()
                 )
                 false
             }
             inflateMenu(R.menu.menu_addnote_toolbar)
         }
+
+        if(addNotePresenter.isEditNote()) {
+            addNotePresenter.updateNote()
+            binding.toolbarAddnote.title = "EditNoteFragment"
+        }
+    }
+
+    override fun showLoadError() {
+        Toast.makeText(context, "Note Load Error", Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateView(
@@ -61,11 +69,19 @@ class AddNoteFragment : Fragment(), AddNoteContract.View {
         return binding.root
     }
 
-    override fun popBackFragment() {
+    override fun popBackFragment(isAdded: Boolean) {
         setFragmentResult(REQUEST_ADD_NOTE, Bundle().apply {
-            putInt(EXTRA_RESULT, RESULT_OK)
+            if (isAdded) putInt(EXTRA_RESULT, RESULT_OK)
+            else putInt(EXTRA_RESULT, RESULT_CANDELED)
         })
         parentFragmentManager.popBackStack()
     }
 
+    override fun setTitle(title: String) {
+        binding.edittextAddnoteTitle.setText(title)
+    }
+
+    override fun setDetail(detail: String) {
+        binding.edittextAddnoteDetail.setText(detail)
+    }
 }

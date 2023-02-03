@@ -14,4 +14,12 @@ object NoteRepository : NoteDataSource {
     override suspend fun saveNote(item: NoteItem) {
         noteLocalDataSource.saveNote(item)
     }
+
+    override suspend fun getNote(noteId: String): Result<NoteItem> {
+        return noteLocalDataSource.getNote(noteId)
+    }
+
+    override suspend fun updateNoteTitleDetail(noteId: String, title: String, detail: String) {
+        noteLocalDataSource.updateNoteTitleDetail(noteId, title, detail)
+    }
 }

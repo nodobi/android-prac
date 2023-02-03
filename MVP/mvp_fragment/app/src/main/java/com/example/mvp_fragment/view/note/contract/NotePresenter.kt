@@ -13,22 +13,26 @@ import kotlinx.coroutines.*
 
 class NotePresenter : NoteContract.Presenter {
     override lateinit var view: NoteContract.View
-    override lateinit var noteAdapterView: NoteAdapterContract.View
+    override var noteAdapterView: NoteAdapterContract.View? = null
+        set(value) {
+            field = value
+            field?.onItemClick = { onItemClickListener(it) }
+        }
+
     override lateinit var noteAdapterModel: NoteAdapterContract.Model
     override lateinit var noteRepository: NoteRepository
     override var onFabClickFunc: ((View) -> Unit)? = { onFabClickListener() }
-    override var fragmentResultFunc: ((String, Bundle) -> Unit)? = { requestKey, bundle -> fragmentResultListener(requestKey, bundle)}
 
     override fun loadNoteList() {
         CoroutineScope(Dispatchers.Main).launch {
             val result = noteRepository.getNotes()
-            when(result) {
+            when (result) {
                 is Result.Success<List<NoteItem>> -> {
                     noteAdapterModel.updateNoteList(result.data)
-                    noteAdapterView.notifyAdapter()
+                    noteAdapterView?.notifyAdapter()
                 }
                 is Result.Error -> {
-                    when(result.exception) {
+                    when (result.exception) {
                         is LocalDataNotFoundException -> {
                             view.showLoadError()
                         }
@@ -38,13 +42,14 @@ class NotePresenter : NoteContract.Presenter {
         }
     }
 
-    private fun fragmentResultListener(requestKey: String, bundle: Bundle) {
-        if(requestKey.equals(AddNoteFragment.REQUEST_ADD_NOTE)) {
+    override fun initFragmentResultListener() {
+        view.registerFragmentResultListener(AddNoteFragment.REQUEST_ADD_NOTE) { requestKey: String, bundle: Bundle ->
             val result = bundle.getInt(AddNoteFragment.EXTRA_RESULT)
-            when(result) {
+            when (result) {
                 AddNoteFragment.RESULT_OK -> {
                     view.showAddSucess()
-                    noteAdapterView.notifyAdapter()
+                    loadNoteList()
+                    noteAdapterView?.notifyAdapter()
                 }
                 AddNoteFragment.RESULT_CANDELED -> {
                     view.showAddError()
@@ -54,6 +59,10 @@ class NotePresenter : NoteContract.Presenter {
     }
 
     private fun onFabClickListener() {
-        view.changeFragment(AddNoteFragment())
+        view.changeFragment(AddNoteFragment(null))
+    }
+
+    private fun onItemClickListener(noteId: String) {
+        view.changeFragment(AddNoteFragment(noteId))
     }
 }
