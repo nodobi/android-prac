@@ -1,6 +1,7 @@
 package com.example.mvp_fragment.data.source.note.local
 
 import com.example.mvp_fragment.data.NoteItem
+import com.example.mvp_fragment.data.source.note.LocalDataNotFoundException
 import com.example.mvp_fragment.data.source.note.NoteDataSource
 import com.example.mvp_fragment.data.source.note.Result
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +15,7 @@ object NoteLocalDataSource : NoteDataSource {
             if(noteList != null) {
                 Result.Success(noteList)
             } else {
-                Result.Error()
+                Result.Error(LocalDataNotFoundException())
             }
         }
     }

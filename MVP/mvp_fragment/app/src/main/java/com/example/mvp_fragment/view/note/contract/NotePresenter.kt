@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.example.mvp_fragment.data.source.note.Result
 import com.example.mvp_fragment.data.NoteItem
+import com.example.mvp_fragment.data.source.note.LocalDataNotFoundException
 import com.example.mvp_fragment.data.source.note.NoteRepository
 import com.example.mvp_fragment.view.addnote.AddNoteFragment
 import com.example.mvp_fragment.view.note.adapter.NoteAdapterContract
@@ -27,7 +28,11 @@ class NotePresenter : NoteContract.Presenter {
                     noteAdapterView.notifyAdapter()
                 }
                 is Result.Error -> {
-                    view.showLoadError()
+                    when(result.exception) {
+                        is LocalDataNotFoundException -> {
+                            view.showLoadError()
+                        }
+                    }
                 }
             }
         }
@@ -35,7 +40,7 @@ class NotePresenter : NoteContract.Presenter {
 
     private fun fragmentResultListener(requestKey: String, bundle: Bundle) {
         if(requestKey.equals(AddNoteFragment.REQUEST_ADD_NOTE)) {
-            var result = bundle.getInt(AddNoteFragment.EXTRA_RESULT)
+            val result = bundle.getInt(AddNoteFragment.EXTRA_RESULT)
             when(result) {
                 AddNoteFragment.RESULT_OK -> {
                     view.showAddSucess()
