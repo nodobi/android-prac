@@ -1,6 +1,7 @@
 package com.example.mvp_fragment.view.addnote.contract
 
-import androidx.fragment.app.Fragment
+import com.example.mvp_fragment.data.NoteItem
+import com.example.mvp_fragment.data.source.note.NoteRepository
 
 interface AddNoteContract {
     interface View {
@@ -10,8 +11,10 @@ interface AddNoteContract {
 
     interface Presenter {
         var view: View
+        var noteRepository: NoteRepository
 
-        var onNavClickFunc: ((android.view.View) -> Unit)?
+        var onNavClickFunc: ((Unit) -> Unit)?
+        var onToolbarItemClickFunc: ((NoteItem) -> Unit)?
 
     }
 }

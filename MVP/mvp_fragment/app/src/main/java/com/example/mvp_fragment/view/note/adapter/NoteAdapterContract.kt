@@ -4,7 +4,7 @@ import com.example.mvp_fragment.data.NoteItem
 
 interface NoteAdapterContract {
     interface Model {
-        fun updateNoteList(noteList: ArrayList<NoteItem>)
+        fun updateNoteList(noteList: List<NoteItem>)
     }
     interface View {
         fun notifyAdapter()

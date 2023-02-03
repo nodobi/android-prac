@@ -17,7 +17,6 @@
             android:layout_height="wrap_content"
             android:theme="@style/Toolbar"
             app:navigationIcon="@drawable/addnote_back_24dp"
-            app:navigationIconTint="@color/white"
             app:title="AddNoteFragment" />
 
     </com.google.android.material.appbar.AppBarLayout>

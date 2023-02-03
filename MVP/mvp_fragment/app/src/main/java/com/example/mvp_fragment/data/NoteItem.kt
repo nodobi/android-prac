@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import java.util.UUID
 
 @Entity(tableName = "note_table")
-data class NoteItem(
+data class NoteItem constructor (
     @ColumnInfo("title") var title: String,
     @ColumnInfo("detail") var detail: String,
     @PrimaryKey

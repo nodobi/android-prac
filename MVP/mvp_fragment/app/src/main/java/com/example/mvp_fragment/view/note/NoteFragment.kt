@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mvp_fragment.R
@@ -47,7 +49,12 @@ class NoteFragment : Fragment(), NoteContract.View {
 
         binding.fabNoteAdd.setOnClickListener(notePresenter.onFabClickFunc)
 
+        setFragmentResultListener(AddNoteFragment.REQUEST_ADD_NOTE) { requestKey, bundle ->
+            notePresenter.fragmentResultFunc?.invoke(requestKey, bundle)
+        }
+
         notePresenter.loadNoteList()
+
     }
 
     override fun onCreateView(
@@ -65,5 +72,21 @@ class NoteFragment : Fragment(), NoteContract.View {
             addToBackStack(null)
             commit()
         }
+    }
+
+    override fun showToast(text: String) {
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showAddSucess() {
+        showToast("Add Note Success")
+    }
+
+    override fun showAddError() {
+        showToast("Add Note Error")
+    }
+
+    override fun showLoadError() {
+        showToast("Load Note Error")
     }
 }

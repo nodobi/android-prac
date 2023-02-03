@@ -13,5 +13,5 @@ interface NoteDao {
     fun deleteNote(id: String)
 
     @Query("SELECT * FROM note_table")
-    fun getNotes(): List<NoteItem>
+    fun getNotes(): List<NoteItem>?
 }

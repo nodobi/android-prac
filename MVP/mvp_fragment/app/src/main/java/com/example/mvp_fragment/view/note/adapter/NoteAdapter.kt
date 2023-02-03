@@ -9,7 +9,7 @@ import com.example.mvp_fragment.databinding.ItemNoteBinding
 
 class NoteAdapter(val context: Context) : RecyclerView.Adapter<NoteViewHolder>(),
     NoteAdapterContract.View, NoteAdapterContract.Model {
-    var noteList: ArrayList<NoteItem> = arrayListOf()
+    var noteList: List<NoteItem> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         return NoteViewHolder(ItemNoteBinding.inflate(LayoutInflater.from(context), parent, false))
@@ -23,7 +23,7 @@ class NoteAdapter(val context: Context) : RecyclerView.Adapter<NoteViewHolder>()
         holder.onBind(noteList[position])
     }
 
-    override fun updateNoteList(noteList: ArrayList<NoteItem>) {
+    override fun updateNoteList(noteList: List<NoteItem>) {
         this.noteList = noteList
     }
 
