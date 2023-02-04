@@ -40,5 +40,7 @@ object NoteLocalDataSource : NoteDataSource {
         noteDao.deleteNote(noteId)
     }
 
-
+    override suspend fun setFavorite(noteId: String, isFavorite: Boolean) = withContext(Dispatchers.IO) {
+        noteDao.updateFavorite(noteId, isFavorite)
+    }
 }

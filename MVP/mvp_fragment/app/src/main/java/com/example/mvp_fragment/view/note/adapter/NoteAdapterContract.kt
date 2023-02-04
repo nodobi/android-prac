@@ -8,6 +8,7 @@ interface NoteAdapterContract {
     }
     interface View {
         var onItemClick: ((String) -> Unit)?
+        var onFavoriteClick: ((String, android.view.View) -> Unit)?
 
         fun notifyAdapter()
     }

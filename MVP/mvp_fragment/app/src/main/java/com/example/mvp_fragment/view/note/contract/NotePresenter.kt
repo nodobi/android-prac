@@ -17,7 +17,10 @@ class NotePresenter : NoteContract.Presenter {
         set(value) {
             field = value
             field?.onItemClick = { onItemClickListener(it) }
+            field?.onFavoriteClick = { noteId, favoriteView -> onFavoriteClickListener(noteId, favoriteView) }
         }
+
+
 
     override lateinit var noteAdapterModel: NoteAdapterContract.Model
     override lateinit var noteRepository: NoteRepository
@@ -64,5 +67,12 @@ class NotePresenter : NoteContract.Presenter {
 
     private fun onItemClickListener(noteId: String) {
         view.changeFragment(AddNoteFragment(noteId))
+    }
+
+    private fun onFavoriteClickListener(noteId: String, favoriteView: View) {
+        CoroutineScope(Dispatchers.Main).launch {
+            favoriteView.apply { isActivated = !isActivated }
+            noteRepository.setFavorite(noteId, favoriteView.isActivated)
+        }
     }
 }

@@ -26,4 +26,8 @@ object NoteRepository : NoteDataSource {
     override suspend fun deleteNote(noteId: String) {
         noteLocalDataSource.deleteNote(noteId)
     }
+
+    override suspend fun setFavorite(noteId: String, isFavorite: Boolean) {
+        noteLocalDataSource.setFavorite(noteId, isFavorite)
+    }
 }
