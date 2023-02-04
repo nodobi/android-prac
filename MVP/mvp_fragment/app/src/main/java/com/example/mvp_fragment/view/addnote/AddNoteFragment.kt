@@ -43,12 +43,17 @@ class AddNoteFragment(val noteId: String?) : Fragment(), AddNoteContract.View {
             }
             setOnMenuItemClickListener {
                 addNotePresenter.onToolbarItemClickFunc?.invoke(
+                    it,
                     binding.edittextAddnoteTitle.text.toString(),
                     binding.edittextAddnoteDetail.text.toString()
                 )
                 false
             }
-            inflateMenu(R.menu.menu_addnote_toolbar)
+            if(addNotePresenter.isEditNote()) {
+                inflateMenu(R.menu.menu_editnote_toolbar)
+            } else {
+                inflateMenu(R.menu.menu_addnote_toolbar)
+            }
         }
 
         if(addNotePresenter.isEditNote()) {

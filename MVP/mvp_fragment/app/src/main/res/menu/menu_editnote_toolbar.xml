@@ -3,8 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/item_addnote_confirm"
+        android:id="@+id/item_editnote_delete"
+        android:title="Delete"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/item_editnote_confirm"
         android:icon="@drawable/addnote_check_24dp"
         android:title="Add"
         app:showAsAction="always" />
+
 </menu>

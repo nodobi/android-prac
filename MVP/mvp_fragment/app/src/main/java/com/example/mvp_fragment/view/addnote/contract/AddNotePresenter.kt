@@ -1,5 +1,8 @@
 package com.example.mvp_fragment.view.addnote.contract
 
+import android.util.Log
+import android.view.MenuItem
+import com.example.mvp_fragment.R
 import com.example.mvp_fragment.data.NoteItem
 import com.example.mvp_fragment.data.source.note.LocalDataNotFoundException
 import com.example.mvp_fragment.data.source.note.NoteRepository
@@ -14,7 +17,7 @@ class AddNotePresenter : AddNoteContract.Presenter {
     var noteId: String? = null
 
     override var onNavClickFunc: ((Unit) -> Unit)? = { onNavClickFunc() }
-    override var onToolbarItemClickFunc: ((String, String) -> Unit)? = { title, detail -> onToolbarItemClickListener(title, detail) }
+    override var onToolbarItemClickFunc: ((MenuItem, String, String) -> Unit)? = { menuItem, title, detail -> onToolbarItemClickListener(menuItem, title, detail) }
     override fun updateNote() {
         CoroutineScope(Dispatchers.Main).launch {
             val result = noteRepository.getNote(noteId!!)
@@ -34,14 +37,21 @@ class AddNotePresenter : AddNoteContract.Presenter {
         }
     }
 
-    private fun onToolbarItemClickListener(title: String, detail: String) {
+    private fun onToolbarItemClickListener(menuItem: MenuItem, title: String, detail: String) {
         CoroutineScope(Dispatchers.Main).launch {
             if(isEditNote()) {
-                noteRepository.updateNoteTitleDetail(noteId!!, title, detail)
+                Log.d("hyeok", "noteId: $noteId, menuItemId: ${menuItem.itemId}")
+                when(menuItem.itemId) {
+                    R.id.item_editnote_delete -> {
+                        noteRepository.deleteNote(noteId!!)
+                    }
+                    R.id.item_editnote_confirm -> {
+                        noteRepository.updateNoteTitleDetail(noteId!!, title, detail)
+                    }
+                }
             }
             else {
-                val note = NoteItem(title, detail)
-                noteRepository.saveNote(note)
+                noteRepository.saveNote(NoteItem(title, detail))
             }
             view.popBackFragment(true)
         }

@@ -22,4 +22,8 @@ object NoteRepository : NoteDataSource {
     override suspend fun updateNoteTitleDetail(noteId: String, title: String, detail: String) {
         noteLocalDataSource.updateNoteTitleDetail(noteId, title, detail)
     }
+
+    override suspend fun deleteNote(noteId: String) {
+        noteLocalDataSource.deleteNote(noteId)
+    }
 }

@@ -36,5 +36,9 @@ object NoteLocalDataSource : NoteDataSource {
             noteDao.updateNoteTitleDetail(noteId, title, detail)
         }
 
+    override suspend fun deleteNote(noteId: String) = withContext(Dispatchers.IO) {
+        noteDao.deleteNote(noteId)
+    }
+
 
 }
