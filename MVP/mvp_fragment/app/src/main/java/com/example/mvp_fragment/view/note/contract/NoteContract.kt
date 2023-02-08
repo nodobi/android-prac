@@ -3,10 +3,11 @@ package com.example.mvp_fragment.view.note.contract
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.mvp_fragment.data.source.note.NoteRepository
+import com.example.mvp_fragment.view.base.BaseContract
 import com.example.mvp_fragment.view.note.adapter.NoteAdapterContract
 
 interface NoteContract {
-    interface View {
+    interface View : BaseContract.View {
         fun changeFragment(fragment: Fragment)
         fun registerFragmentResultListener(requestKey: String, listener: ((String, Bundle) -> Unit))
         fun showToast(text: String)
@@ -15,8 +16,7 @@ interface NoteContract {
         fun showLoadError()
     }
 
-    interface Presenter {
-        var view: View
+    interface Presenter : BaseContract.Presenter<View> {
         var noteAdapterView: NoteAdapterContract.View?
         var noteAdapterModel: NoteAdapterContract.Model
         var noteRepository: NoteRepository
