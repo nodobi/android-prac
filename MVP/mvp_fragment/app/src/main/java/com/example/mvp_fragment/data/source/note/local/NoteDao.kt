@@ -23,4 +23,7 @@ interface NoteDao {
 
     @Query("UPDATE note_table SET favorite = :favorite WHERE id = :id")
     fun updateFavorite(id: String, favorite: Boolean)
+
+    @Query("SELECT * FROM note_table WHERE favorite = 1")
+    fun getFavoriteNotes(): List<NoteItem>?
 }

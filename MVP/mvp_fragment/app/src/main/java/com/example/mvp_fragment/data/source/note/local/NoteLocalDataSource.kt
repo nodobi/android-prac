@@ -40,7 +40,17 @@ object NoteLocalDataSource : NoteDataSource {
         noteDao.deleteNote(noteId)
     }
 
-    override suspend fun setFavorite(noteId: String, isFavorite: Boolean) = withContext(Dispatchers.IO) {
-        noteDao.updateFavorite(noteId, isFavorite)
+    override suspend fun setFavorite(noteId: String, isFavorite: Boolean) =
+        withContext(Dispatchers.IO) {
+            noteDao.updateFavorite(noteId, isFavorite)
+        }
+
+    override suspend fun getFavoriteNotes(): Result<List<NoteItem>> = withContext(Dispatchers.IO) {
+        val noteList = noteDao.getFavoriteNotes()
+        if (noteList == null) {
+            Result.Error(LocalDataNotFoundException())
+        } else {
+            Result.Success(noteList)
+        }
     }
 }

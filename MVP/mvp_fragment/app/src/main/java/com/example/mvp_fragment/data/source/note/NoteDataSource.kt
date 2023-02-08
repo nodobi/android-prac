@@ -9,4 +9,5 @@ interface NoteDataSource {
     suspend fun updateNoteTitleDetail(noteId: String, title: String, detail: String)
     suspend fun deleteNote(noteId: String)
     suspend fun setFavorite(noteId: String, isFavorite: Boolean)
+    suspend fun getFavoriteNotes(): Result<List<NoteItem>>
 }

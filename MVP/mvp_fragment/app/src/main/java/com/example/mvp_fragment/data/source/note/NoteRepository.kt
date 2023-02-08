@@ -30,4 +30,8 @@ object NoteRepository : NoteDataSource {
     override suspend fun setFavorite(noteId: String, isFavorite: Boolean) {
         noteLocalDataSource.setFavorite(noteId, isFavorite)
     }
+
+    override suspend fun getFavoriteNotes(): Result<List<NoteItem>> {
+        return noteLocalDataSource.getFavoriteNotes()
+    }
 }
