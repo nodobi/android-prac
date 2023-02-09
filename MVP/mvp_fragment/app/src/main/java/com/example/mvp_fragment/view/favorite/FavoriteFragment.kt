@@ -21,7 +21,7 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(), FavoriteContra
         inflater: LayoutInflater,
         container: ViewGroup?
     ): FragmentFavoriteBinding {
-        return FragmentFavoriteBinding.inflate(inflater,  container, false)
+        return FragmentFavoriteBinding.inflate(inflater, container, false)
     }
 
     override fun initViews() {

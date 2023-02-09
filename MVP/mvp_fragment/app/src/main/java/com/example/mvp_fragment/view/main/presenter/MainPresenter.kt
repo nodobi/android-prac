@@ -9,8 +9,15 @@ import com.example.mvp_fragment.view.note.NoteFragment
 class MainPresenter : MainContract.Presenter {
     override lateinit var view: MainContract.View
     override var onNavItemSelectFunc: ((MenuItem) -> Boolean) = { onNavItemSelectListener(it) }
+    private var curMenu: MenuItem? = null
 
     private fun onNavItemSelectListener(selected: MenuItem): Boolean {
+        if (curMenu != null) {
+            curMenu?.isEnabled = true
+        }
+        curMenu = selected
+        curMenu?.isEnabled = false
+
         when (selected.itemId) {
             R.id.item_note -> {
                 view.changeFragment(NoteFragment())
@@ -24,4 +31,5 @@ class MainPresenter : MainContract.Presenter {
         }
         return true
     }
+
 }
