@@ -7,9 +7,11 @@ import com.example.mvp_fragment.data.NoteItem
 import com.example.mvp_fragment.data.source.note.LocalDataNotFoundException
 import com.example.mvp_fragment.data.source.note.NoteRepository
 import com.example.mvp_fragment.data.source.note.Result
+import com.example.mvp_fragment.util.DateFormatter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class AddNotePresenter : AddNoteContract.Presenter {
     override lateinit var view: AddNoteContract.View
@@ -17,7 +19,9 @@ class AddNotePresenter : AddNoteContract.Presenter {
     var noteId: String? = null
 
     override var onNavClickFunc: ((Unit) -> Unit)? = { onNavClickFunc() }
-    override var onToolbarItemClickFunc: ((MenuItem, String, String) -> Unit)? = { menuItem, title, detail -> onToolbarItemClickListener(menuItem, title, detail) }
+    override var onToolbarItemClickFunc: ((MenuItem, String, String) -> Unit)? =
+        { menuItem, title, detail -> onToolbarItemClickListener(menuItem, title, detail) }
+
     override fun updateNote() {
         CoroutineScope(Dispatchers.Main).launch {
             val result = noteRepository.getNote(noteId!!)
@@ -39,9 +43,9 @@ class AddNotePresenter : AddNoteContract.Presenter {
 
     private fun onToolbarItemClickListener(menuItem: MenuItem, title: String, detail: String) {
         CoroutineScope(Dispatchers.Main).launch {
-            if(isEditNote()) {
+            if (isEditNote()) {
                 Log.d("hyeok", "noteId: $noteId, menuItemId: ${menuItem.itemId}")
-                when(menuItem.itemId) {
+                when (menuItem.itemId) {
                     R.id.item_editnote_delete -> {
                         noteRepository.deleteNote(noteId!!)
                     }
@@ -49,9 +53,14 @@ class AddNotePresenter : AddNoteContract.Presenter {
                         noteRepository.updateNoteTitleDetail(noteId!!, title, detail)
                     }
                 }
-            }
-            else {
-                noteRepository.saveNote(NoteItem(title, detail))
+            } else {
+                noteRepository.saveNote(
+                    NoteItem(
+                        title,
+                        detail,
+                        date = DateFormatter.localDateToString(LocalDate.now())
+                    )
+                )
             }
             view.popBackFragment(true)
         }
@@ -61,7 +70,7 @@ class AddNotePresenter : AddNoteContract.Presenter {
         view.popBackFragment(false)
     }
 
-    override fun isEditNote() : Boolean {
+    override fun isEditNote(): Boolean {
         return noteId != null
     }
 }
