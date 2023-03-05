@@ -11,6 +11,10 @@ object NoteRepository : NoteDataSource {
         return noteLocalDataSource.getNotes()
     }
 
+    override suspend fun getNotes(date: String): Result<List<NoteItem>> {
+        return noteLocalDataSource.getNotes(date)
+    }
+
     override suspend fun saveNote(item: NoteItem) {
         noteLocalDataSource.saveNote(item)
     }

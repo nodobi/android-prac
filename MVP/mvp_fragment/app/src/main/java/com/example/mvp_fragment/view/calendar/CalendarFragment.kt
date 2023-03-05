@@ -4,16 +4,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mvp_fragment.data.source.note.NoteRepository
+import com.example.mvp_fragment.data.source.note.local.NoteDatabase
+import com.example.mvp_fragment.data.source.note.local.NoteLocalDataSource
 import com.example.mvp_fragment.databinding.FragmentCalendarBinding
 import com.example.mvp_fragment.view.base.BaseFragment
-import com.example.mvp_fragment.view.calendar.contract.CalendarFragmentContract
-import com.example.mvp_fragment.view.calendar.contract.CalendarFragmentPresenter
+import com.example.mvp_fragment.view.calendar.contract.CalendarContract
+import com.example.mvp_fragment.view.calendar.contract.CalendarPresenter
 import com.example.mvp_fragment.view.calendar.adapter.CalendarAdapter
 import java.time.LocalDate
 
 class CalendarFragment(private val date: LocalDate) : BaseFragment<FragmentCalendarBinding>(),
-    CalendarFragmentContract.View {
-    private lateinit var mPresenter: CalendarFragmentPresenter
+    CalendarContract.View {
+    private lateinit var mPresenter: CalendarPresenter
     private lateinit var mAdapter: CalendarAdapter
 
     override fun getFragmentBinding(
@@ -25,10 +28,15 @@ class CalendarFragment(private val date: LocalDate) : BaseFragment<FragmentCalen
 
     override fun initViews() {
         mAdapter = CalendarAdapter(requireContext())
-        mPresenter = CalendarFragmentPresenter().apply {
+        mPresenter = CalendarPresenter().apply {
             view = this@CalendarFragment
             calendarAdapterModel = mAdapter
             calendarAdapterView = mAdapter
+            noteRepository = NoteRepository.apply {
+                noteLocalDataSource = NoteLocalDataSource.apply {
+                    noteDao = NoteDatabase.getInstance(requireContext()).noteDao()
+                }
+            }
         }
         binding.recyclerviewCalendar.apply {
             adapter = mAdapter
@@ -37,6 +45,6 @@ class CalendarFragment(private val date: LocalDate) : BaseFragment<FragmentCalen
             overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         }
 
-        mPresenter.loadCalendarData(date)
+        mPresenter.updateCalendarData(date)
     }
 }

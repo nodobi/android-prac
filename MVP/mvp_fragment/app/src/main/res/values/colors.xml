@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="light_gray">#FFCCCCCC</color>
     <color name="red">#FFFF5555</color>
+
+    <color name="calendar_note_activate">#FFFF5555</color>
+    <color name="calendar_note_inactivated">#FFAAAAAA</color>
 </resources>

@@ -11,12 +11,22 @@ object NoteLocalDataSource : NoteDataSource {
     lateinit var noteDao: NoteDao
     override suspend fun getNotes(): Result<List<NoteItem>> = withContext(Dispatchers.IO) {
         val noteList = noteDao.getNotes()
-        if (noteList == null) {
+        if (noteList.isEmpty()) {
             Result.Error(LocalDataNotFoundException())
         } else {
             Result.Success(noteList)
         }
     }
+
+    override suspend fun getNotes(date: String): Result<List<NoteItem>> =
+        withContext(Dispatchers.IO) {
+            val noteList = noteDao.getNotes(date)
+            if (noteList.isEmpty()) {
+                Result.Error(LocalDataNotFoundException())
+            } else {
+                Result.Success(noteList)
+            }
+        }
 
     override suspend fun saveNote(item: NoteItem) = withContext(Dispatchers.IO) {
         noteDao.insertNote(item)
@@ -47,7 +57,7 @@ object NoteLocalDataSource : NoteDataSource {
 
     override suspend fun getFavoriteNotes(): Result<List<NoteItem>> = withContext(Dispatchers.IO) {
         val noteList = noteDao.getFavoriteNotes()
-        if (noteList == null) {
+        if (noteList.isEmpty()) {
             Result.Error(LocalDataNotFoundException())
         } else {
             Result.Success(noteList)

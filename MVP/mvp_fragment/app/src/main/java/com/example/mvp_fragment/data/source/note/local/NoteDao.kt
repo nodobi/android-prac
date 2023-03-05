@@ -13,7 +13,7 @@ interface NoteDao {
     fun deleteNote(id: String)
 
     @Query("SELECT * FROM note_table")
-    fun getNotes(): List<NoteItem>?
+    fun getNotes(): List<NoteItem>
 
     @Query("SELECT * FROM note_table WHERE id = :id")
     fun getNote(id: String): NoteItem?
@@ -25,5 +25,8 @@ interface NoteDao {
     fun updateFavorite(id: String, favorite: Boolean)
 
     @Query("SELECT * FROM note_table WHERE favorite = 1")
-    fun getFavoriteNotes(): List<NoteItem>?
+    fun getFavoriteNotes(): List<NoteItem>
+
+    @Query("SELECT * FROM note_table WHERE date = :date")
+    fun getNotes(date: String): List<NoteItem>
 }

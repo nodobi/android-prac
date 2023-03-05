@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mvp_fragment.data.NoteItem
 import com.example.mvp_fragment.databinding.ItemCalendarDateBinding
 import com.example.mvp_fragment.util.CalendarUtil
 import java.time.LocalDate
@@ -14,8 +15,7 @@ class CalendarAdapter(private val context: Context) :
     private var width: Int = 0
     private var height: Int = 0
     private lateinit var date: LocalDate
-    private val data: List<LocalDate>
-        get() = CalendarUtil.getDateList(date)
+    private var data: List<Pair<LocalDate, List<NoteItem>?>> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         if (width == 0 && height == 0) {
@@ -39,14 +39,22 @@ class CalendarAdapter(private val context: Context) :
         holder.onBind(
             width / 7,
             height / CalendarUtil.getCalendarWeekCnt(date),
-            data[position],
-            date
+            date,
+            data[position].first,
+            data[position].second
         )
+
     }
 
-    override fun updateDateList(date: LocalDate) {
+    override fun updateDate(date: LocalDate) {
         this.date = date
     }
 
+    override fun updateData(data: List<Pair<LocalDate, List<NoteItem>?>>) {
+        this.data = data
+    }
 
+    override fun notifyAdapter() {
+        notifyDataSetChanged()
+    }
 }
