@@ -13,16 +13,8 @@ import java.time.LocalDate
 
 class CalendarFragment(private val date: LocalDate) : BaseFragment<FragmentCalendarBinding>(),
     CalendarFragmentContract.View {
-    private val presenter: CalendarFragmentPresenter by lazy {
-        CalendarFragmentPresenter().apply {
-            view = this@CalendarFragment
-            calendarAdapterModel = calendarAdapter
-            calendarAdapterView = calendarAdapter
-        }
-    }
-    private val calendarAdapter: CalendarAdapter by lazy {
-        CalendarAdapter(requireContext())
-    }
+    private lateinit var mPresenter: CalendarFragmentPresenter
+    private lateinit var mAdapter: CalendarAdapter
 
     override fun getFragmentBinding(
         inflater: LayoutInflater,
@@ -32,13 +24,19 @@ class CalendarFragment(private val date: LocalDate) : BaseFragment<FragmentCalen
     }
 
     override fun initViews() {
+        mAdapter = CalendarAdapter(requireContext())
+        mPresenter = CalendarFragmentPresenter().apply {
+            view = this@CalendarFragment
+            calendarAdapterModel = mAdapter
+            calendarAdapterView = mAdapter
+        }
         binding.recyclerviewCalendar.apply {
-            adapter = calendarAdapter
+            adapter = mAdapter
             layoutManager = GridLayoutManager(requireContext(), 7)
             addItemDecoration(CalendarDecoration(requireContext()))
             overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         }
 
-        presenter.loadCalendarData(date)
+        mPresenter.loadCalendarData(date)
     }
 }

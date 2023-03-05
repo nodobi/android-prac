@@ -14,7 +14,8 @@ class CalendarAdapter(private val context: Context) :
     private var width: Int = 0
     private var height: Int = 0
     private lateinit var date: LocalDate
-    private lateinit var data: List<LocalDate>
+    private val data: List<LocalDate>
+        get() = CalendarUtil.getDateList(date)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         if (width == 0 && height == 0) {
@@ -45,7 +46,6 @@ class CalendarAdapter(private val context: Context) :
 
     override fun updateDateList(date: LocalDate) {
         this.date = date
-        data = CalendarUtil.getDateList(date)
     }
 
 

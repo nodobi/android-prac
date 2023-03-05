@@ -6,8 +6,9 @@ import com.example.mvp_fragment.data.NoteItem
 import com.example.mvp_fragment.databinding.ItemNoteBinding
 
 class NoteViewHolder(
-    val binding: ItemNoteBinding, val onItemClick: ((String) -> Unit)?,
-    val onFavoriteClick: ((String, View) -> Unit)?
+    private val binding: ItemNoteBinding,
+    private val onItemClick: ((String) -> Unit)?,
+    private val onFavoriteClick: ((String, View) -> Unit)?
 ) :
     RecyclerView.ViewHolder(binding.root) {
 

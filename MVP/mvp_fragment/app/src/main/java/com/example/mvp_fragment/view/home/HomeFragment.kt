@@ -11,8 +11,8 @@ import com.example.mvp_fragment.view.home.presenter.HomeContract
 import com.example.mvp_fragment.view.home.presenter.HomePresenter
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeContract.View {
-    private lateinit var homePresenter: HomePresenter
-    private lateinit var pagerAdapter: CalendarPagerAdapter
+    private lateinit var mPresenter: HomePresenter
+    private lateinit var mAdapter: CalendarPagerAdapter
 
     override fun getFragmentBinding(
         inflater: LayoutInflater,
@@ -22,21 +22,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeContract.View {
     }
 
     override fun initViews() {
-        pagerAdapter = CalendarPagerAdapter(requireActivity())
-
-        homePresenter = HomePresenter().apply {
+        mAdapter = CalendarPagerAdapter(requireActivity())
+        mPresenter = HomePresenter().apply {
             view = this@HomeFragment
-            calendarPagerView = pagerAdapter
-            calendarPagerModel = pagerAdapter
+            calendarPagerView = mAdapter
+            calendarPagerModel = mAdapter
         }
 
         binding.viewpagerHome.apply {
-            adapter = pagerAdapter
+            adapter = mAdapter
             orientation = ViewPager2.ORIENTATION_HORIZONTAL
             registerOnPageChangeCallback(
                 object : OnPageChangeCallback() {
                     override fun onPageSelected(position: Int) {
-                        homePresenter.changeDisplayDate(position)
+                        mPresenter.changeDisplayDate(position)
                     }
                 }
             )

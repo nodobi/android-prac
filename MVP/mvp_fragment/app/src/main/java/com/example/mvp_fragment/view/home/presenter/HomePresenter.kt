@@ -15,25 +15,23 @@ class HomePresenter : HomeContract.Presenter {
             field?.onPagerCreateFragment = { onPagerCreateFragmentListener(it) }
         }
 
-    private var curDate: LocalDate = LocalDate.now()
-    private var prevPos: Int = 0
+    private var mDate: LocalDate = LocalDate.now()
+    private var mPrevPos: Int = 0
 
     private fun onPagerCreateFragmentListener(position: Int): Fragment {
         return CalendarFragment(LocalDate.now().plusMonths(position.toLong()))
     }
 
     fun changeDisplayDate(position: Int) {
-        curDate = curDate.plusMonths(comparePos(position).toLong())
-        val year: String = curDate.year.toString()
-        val month: String = curDate.monthValue.toString()
-        prevPos = position
-        view.changeDisplayDate(year, month)
+        mDate = mDate.plusMonths(comparePos(position).toLong())
+        mPrevPos = position
+        view.changeDisplayDate(mDate.year.toString(), mDate.monthValue.toString())
     }
 
     private fun comparePos(curPos: Int): Int {
-        return if (curPos < prevPos) {
+        return if (curPos < mPrevPos) {
             -1
-        } else if (curPos > prevPos) {
+        } else if (curPos > mPrevPos) {
             1
         } else {
             0

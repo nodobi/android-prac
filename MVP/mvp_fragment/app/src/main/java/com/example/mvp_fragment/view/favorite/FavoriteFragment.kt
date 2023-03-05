@@ -14,8 +14,8 @@ import com.example.mvp_fragment.view.favorite.contract.FavoriteContract
 import com.example.mvp_fragment.view.favorite.contract.FavoritePresenter
 
 class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(), FavoriteContract.View {
-    lateinit var presenter: FavoritePresenter
-    lateinit var adapter: FavoriteAdapter
+    private lateinit var mPresenter: FavoritePresenter
+    private lateinit var mAdapter: FavoriteAdapter
 
     override fun getFragmentBinding(
         inflater: LayoutInflater,
@@ -25,11 +25,11 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(), FavoriteContra
     }
 
     override fun initViews() {
-        adapter = FavoriteAdapter(requireContext())
-        presenter = FavoritePresenter().apply {
+        mAdapter = FavoriteAdapter(requireContext())
+        mPresenter = FavoritePresenter().apply {
             view = this@FavoriteFragment
-            favoriteAdapterView = adapter
-            favoriteAdapterModel = adapter
+            favoriteAdapterView = mAdapter
+            favoriteAdapterModel = mAdapter
             noteRepository = NoteRepository.apply {
                 noteLocalDataSource = NoteLocalDataSource.apply {
                     noteDao = NoteDatabase.getInstance(requireContext()).noteDao()
@@ -38,12 +38,12 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>(), FavoriteContra
         }
 
         binding.recyclerviewFavoriteList.apply {
-            adapter = this@FavoriteFragment.adapter
+            adapter = this@FavoriteFragment.mAdapter
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(DividerItemDecoration(requireContext(), 1))
         }
 
-        presenter.loadFavoriteNoteList()
+        mPresenter.loadFavoriteNoteList()
 
     }
 }

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mvp_fragment.R
 
 
-class CalendarDecoration(private val context: Context) : RecyclerView.ItemDecoration() {
+class CalendarDecoration(context: Context) : RecyclerView.ItemDecoration() {
 
     private val mDivider : Drawable = ContextCompat.getDrawable(context, R.drawable.home_calendar_divider)!!
 

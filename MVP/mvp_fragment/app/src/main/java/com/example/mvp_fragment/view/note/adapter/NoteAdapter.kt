@@ -10,12 +10,16 @@ import com.example.mvp_fragment.databinding.ItemNoteBinding
 
 class NoteAdapter(val context: Context) : RecyclerView.Adapter<NoteViewHolder>(),
     NoteAdapterContract.View, NoteAdapterContract.Model {
-    var noteList: List<NoteItem> = listOf()
+    private var noteList: List<NoteItem> = listOf()
     override var onItemClick: ((String) -> Unit)? = null
     override var onFavoriteClick: ((String, View) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
-        return NoteViewHolder(ItemNoteBinding.inflate(LayoutInflater.from(context), parent, false), onItemClick, onFavoriteClick)
+        return NoteViewHolder(
+            ItemNoteBinding.inflate(LayoutInflater.from(context), parent, false),
+            onItemClick,
+            onFavoriteClick
+        )
     }
 
     override fun getItemCount(): Int {

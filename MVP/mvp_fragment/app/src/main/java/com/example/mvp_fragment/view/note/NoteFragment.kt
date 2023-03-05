@@ -19,8 +19,8 @@ import com.example.mvp_fragment.view.note.contract.NoteContract
 import com.example.mvp_fragment.view.note.contract.NotePresenter
 
 class NoteFragment : BaseFragment<FragmentNoteBinding>(), NoteContract.View {
-    lateinit var notePresenter: NotePresenter
-    lateinit var noteAdapter: NoteAdapter
+    private lateinit var mPresenter: NotePresenter
+    private lateinit var mAdapter: NoteAdapter
 
     override fun getFragmentBinding(
         inflater: LayoutInflater,
@@ -30,17 +30,12 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>(), NoteContract.View {
     }
 
     override fun initViews() {
-        noteAdapter = NoteAdapter(requireContext())
-        binding.recyclerviewNoteList.apply {
-            adapter = noteAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-            addItemDecoration(DividerItemDecoration(requireContext(), 1))
-        }
+        mAdapter = NoteAdapter(requireContext())
 
-        notePresenter = NotePresenter().apply {
+        mPresenter = NotePresenter().apply {
             view = this@NoteFragment
-            noteAdapterModel = noteAdapter
-            noteAdapterView = noteAdapter
+            noteAdapterModel = mAdapter
+            noteAdapterView = mAdapter
             noteRepository = NoteRepository.apply {
                 noteLocalDataSource = NoteLocalDataSource.apply {
                     noteDao = NoteDatabase.getInstance(requireContext()).noteDao()
@@ -48,11 +43,16 @@ class NoteFragment : BaseFragment<FragmentNoteBinding>(), NoteContract.View {
             }
         }
 
-        binding.fabNoteAdd.setOnClickListener(notePresenter.onFabClickFunc)
+        binding.recyclerviewNoteList.apply {
+            adapter = mAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(DividerItemDecoration(requireContext(), 1))
+        }
 
-        notePresenter.initFragmentResultListener()
+        binding.fabNoteAdd.setOnClickListener(mPresenter.onFabClickFunc)
 
-        notePresenter.loadNoteList()
+        mPresenter.initFragmentResultListener()
+        mPresenter.loadNoteList()
     }
 
     override fun changeFragment(fragment: Fragment) {

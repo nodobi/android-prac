@@ -9,7 +9,7 @@ import com.example.mvp_fragment.databinding.ItemNoteBinding
 
 class FavoriteAdapter(private val context: Context) : RecyclerView.Adapter<FavoriteViewHolder>(),
     FavoriteAdapterContract.View, FavoriteAdapterContract.Model {
-    var favoriteNoteList: List<NoteItem> = listOf()
+    private var favoriteNoteList: List<NoteItem> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
         return FavoriteViewHolder(

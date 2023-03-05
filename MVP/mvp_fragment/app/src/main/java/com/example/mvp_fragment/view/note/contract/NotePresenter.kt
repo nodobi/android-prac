@@ -19,9 +19,6 @@ class NotePresenter : NoteContract.Presenter {
             field?.onItemClick = { onItemClickListener(it) }
             field?.onFavoriteClick = { noteId, favoriteView -> onFavoriteClickListener(noteId, favoriteView) }
         }
-
-
-
     override lateinit var noteAdapterModel: NoteAdapterContract.Model
     override lateinit var noteRepository: NoteRepository
     override var onFabClickFunc: ((View) -> Unit)? = { onFabClickListener() }
@@ -54,7 +51,7 @@ class NotePresenter : NoteContract.Presenter {
                     loadNoteList()
                     noteAdapterView?.notifyAdapter()
                 }
-                AddNoteFragment.RESULT_CANDELED -> {
+                AddNoteFragment.RESULT_CANCELED -> {
                     view.showAddError()
                 }
             }

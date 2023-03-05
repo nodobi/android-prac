@@ -8,22 +8,20 @@ import com.example.mvp_fragment.databinding.ActivityMainBinding
 import com.example.mvp_fragment.view.main.presenter.MainContract
 import com.example.mvp_fragment.view.main.presenter.MainPresenter
 
-class MainActivity :
-    AppCompatActivity(),
-    MainContract.View {
+class MainActivity : AppCompatActivity(), MainContract.View {
     lateinit var binding: ActivityMainBinding
-    lateinit var mainPresenter: MainPresenter
+    private lateinit var mPresenter: MainPresenter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        mainPresenter = MainPresenter().apply {
+        mPresenter = MainPresenter().apply {
             view = this@MainActivity
         }
 
         binding.btmNavigation.run {
-            setOnItemSelectedListener(mainPresenter.onNavItemSelectFunc)
+            setOnItemSelectedListener(mPresenter.onNavItemSelectFunc)
             selectedItemId = R.id.item_home
         }
     }
