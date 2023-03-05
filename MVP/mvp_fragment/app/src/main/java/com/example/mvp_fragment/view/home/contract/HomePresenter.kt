@@ -1,4 +1,4 @@
-package com.example.mvp_fragment.view.home.presenter
+package com.example.mvp_fragment.view.home.contract
 
 import androidx.fragment.app.Fragment
 import com.example.mvp_fragment.view.calendar.CalendarFragment
@@ -15,17 +15,25 @@ class HomePresenter : HomeContract.Presenter {
             field?.onPagerCreateFragment = { onPagerCreateFragmentListener(it) }
         }
 
-    private var mDate: LocalDate = LocalDate.now()
-    private var mPrevPos: Int = 0
+    private val initialPageCount = 1000
+    private val initialPagePos = initialPageCount / 2
 
-    private fun onPagerCreateFragmentListener(position: Int): Fragment {
-        return CalendarFragment(LocalDate.now().plusMonths(position.toLong()))
-    }
+    private var mDate: LocalDate = LocalDate.now()
+    private var mPrevPos: Int = initialPagePos
 
     fun changeDisplayDate(position: Int) {
         mDate = mDate.plusMonths(comparePos(position).toLong())
         mPrevPos = position
         view.changeDisplayDate(mDate.year.toString(), mDate.monthValue.toString())
+    }
+
+    override fun initPageCount() {
+        calendarPagerModel?.setPageCount(initialPageCount)
+        view.setPagePosition(initialPagePos)
+    }
+
+    private fun onPagerCreateFragmentListener(position: Int): Fragment {
+        return CalendarFragment(LocalDate.now().plusMonths(position.toLong() - (initialPagePos)))
     }
 
     private fun comparePos(curPos: Int): Int {

@@ -7,8 +7,8 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.example.mvp_fragment.databinding.FragmentHomeBinding
 import com.example.mvp_fragment.view.base.BaseFragment
 import com.example.mvp_fragment.view.home.adapter.CalendarPagerAdapter
-import com.example.mvp_fragment.view.home.presenter.HomeContract
-import com.example.mvp_fragment.view.home.presenter.HomePresenter
+import com.example.mvp_fragment.view.home.contract.HomeContract
+import com.example.mvp_fragment.view.home.contract.HomePresenter
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeContract.View {
     private lateinit var mPresenter: HomePresenter
@@ -41,6 +41,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeContract.View {
             )
         }
 
+        mPresenter.initPageCount()
     }
 
     override fun changeDisplayDate(year: String, month: String) {
@@ -48,4 +49,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeContract.View {
         binding.textviewHomeMonth.text = month
     }
 
+    override fun setPagePosition(position: Int) {
+        binding.viewpagerHome.setCurrentItem(position, false)
+    }
 }
