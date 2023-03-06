@@ -12,9 +12,8 @@ import com.example.mvp_fragment.view.base.BaseFragment
 import com.example.mvp_fragment.view.calendar.contract.CalendarContract
 import com.example.mvp_fragment.view.calendar.contract.CalendarPresenter
 import com.example.mvp_fragment.view.calendar.adapter.CalendarAdapter
-import java.time.LocalDate
 
-class CalendarFragment(private val date: LocalDate) : BaseFragment<FragmentCalendarBinding>(),
+class CalendarFragment : BaseFragment<FragmentCalendarBinding>(),
     CalendarContract.View {
     private lateinit var mPresenter: CalendarPresenter
     private lateinit var mAdapter: CalendarAdapter
@@ -45,6 +44,6 @@ class CalendarFragment(private val date: LocalDate) : BaseFragment<FragmentCalen
             overScrollMode = RecyclerView.OVER_SCROLL_NEVER
         }
 
-        mPresenter.updateCalendarData(date)
+        mPresenter.updateCalendarData(arguments)
     }
 }

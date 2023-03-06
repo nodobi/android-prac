@@ -1,5 +1,6 @@
 package com.example.mvp_fragment.view.home.contract
 
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.mvp_fragment.view.calendar.CalendarFragment
 import com.example.mvp_fragment.view.home.adapter.CalendarPagerAdapterContract
@@ -21,15 +22,15 @@ class HomePresenter : HomeContract.Presenter {
     private var mDate: LocalDate = LocalDate.now()
     private var mPrevPos: Int = initialPagePos
 
-    fun changeDisplayDate(position: Int) {
-        mDate = mDate.plusMonths(comparePos(position).toLong())
-        mPrevPos = position
-        view.changeDisplayDate(mDate.year.toString(), mDate.monthValue.toString())
-    }
-
     override fun initPageCount() {
         calendarPagerModel?.setPageCount(initialPageCount)
         view.setPagePosition(initialPagePos)
+    }
+
+    private fun changeDisplayDate(position: Int) {
+        mDate = mDate.plusMonths(comparePos(position).toLong())
+        mPrevPos = position
+        view.changeDisplayDate(mDate.year.toString(), mDate.monthValue.toString())
     }
 
     private fun onPageSelected(position: Int) {
@@ -37,7 +38,15 @@ class HomePresenter : HomeContract.Presenter {
     }
 
     private fun onPagerCreateFragmentListener(position: Int): Fragment {
-        return CalendarFragment(LocalDate.now().plusMonths(position.toLong() - (initialPagePos)))
+        val targetDate = LocalDate.now().plusMonths(position.toLong() - (initialPagePos))
+        val calendarFragment = CalendarFragment().apply {
+            arguments = Bundle().apply {
+                putInt("year", targetDate.year)
+                putInt("month", targetDate.monthValue)
+                putInt("day", targetDate.dayOfMonth)
+            }
+        }
+        return calendarFragment
     }
 
     private fun comparePos(curPos: Int): Int {
