@@ -12,6 +12,7 @@ interface HomeContract : BaseContract {
     interface Presenter : BaseContract.Presenter<View> {
         var calendarPagerView: CalendarPagerAdapterContract.View
         var calendarPagerModel: CalendarPagerAdapterContract.Model?
+        var onPageSelected: (Int) -> Unit
 
         fun initPageCount()
     }

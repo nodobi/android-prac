@@ -14,7 +14,7 @@ class HomePresenter : HomeContract.Presenter {
             field = value
             field?.onPagerCreateFragment = { onPagerCreateFragmentListener(it) }
         }
-
+    override var onPageSelected: (Int) -> Unit = { onPageSelected(it) }
     private val initialPageCount = 1000
     private val initialPagePos = initialPageCount / 2
 
@@ -32,6 +32,10 @@ class HomePresenter : HomeContract.Presenter {
         view.setPagePosition(initialPagePos)
     }
 
+    private fun onPageSelected(position: Int) {
+        changeDisplayDate(position)
+    }
+
     private fun onPagerCreateFragmentListener(position: Int): Fragment {
         return CalendarFragment(LocalDate.now().plusMonths(position.toLong() - (initialPagePos)))
     }
@@ -45,4 +49,5 @@ class HomePresenter : HomeContract.Presenter {
             0
         }
     }
+
 }

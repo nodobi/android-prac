@@ -32,13 +32,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeContract.View {
         binding.viewpagerHome.apply {
             adapter = mAdapter
             orientation = ViewPager2.ORIENTATION_HORIZONTAL
-            registerOnPageChangeCallback(
-                object : OnPageChangeCallback() {
-                    override fun onPageSelected(position: Int) {
-                        mPresenter.changeDisplayDate(position)
-                    }
+            registerOnPageChangeCallback(object: OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    mPresenter.onPageSelected.invoke(position)
                 }
-            )
+            })
         }
 
         mPresenter.initPageCount()
@@ -52,4 +50,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), HomeContract.View {
     override fun setPagePosition(position: Int) {
         binding.viewpagerHome.setCurrentItem(position, false)
     }
+
 }
