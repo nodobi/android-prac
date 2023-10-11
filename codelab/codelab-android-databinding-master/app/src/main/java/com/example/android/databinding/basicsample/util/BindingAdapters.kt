@@ -17,45 +17,14 @@
 package com.example.android.databinding.basicsample.util
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.core.content.ContextCompat
-import androidx.core.widget.ImageViewCompat
 import androidx.databinding.BindingAdapter
 import com.example.android.databinding.basicsample.R
 import com.example.android.databinding.basicsample.data.Popularity
-
-/**
- * A Binding Adapter that is called whenever the value of the attribute `app:popularityIcon`
- * changes. Receives a popularity level that determines the icon and tint color to use.
- */
-@BindingAdapter("app:popularityIcon")
-fun popularityIcon(view: ImageView, popularity: Popularity) {
-
-    val color = getAssociatedColor(popularity, view.context)
-
-    ImageViewCompat.setImageTintList(view, ColorStateList.valueOf(color))
-
-    view.setImageDrawable(getDrawablePopularity(popularity, view.context))
-}
-
-/**
- * A Binding Adapter that is called whenever the value of the attribute `android:progressTint`
- * changes. Depending on the value it determines the color of the progress bar.
- */
-@BindingAdapter("app:progressTint")
-fun tintPopularity(view: ProgressBar, popularity: Popularity) {
-
-    val color = getAssociatedColor(popularity, view.context)
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        view.progressTintList = ColorStateList.valueOf(color)
-    }
-}
 
 /**
  *  Sets the value of the progress bar so that 5 likes will fill it up.
@@ -76,6 +45,14 @@ fun setProgress(progressBar: ProgressBar, likes: Int, max: Int) {
 fun hideIfZero(view: View, number: Int) {
     view.visibility = if (number == 0) View.GONE else View.VISIBLE
 }
+
+
+@BindingAdapter("app:popularity")
+fun setPopularityIcon(view: ImageView, popularity: Popularity) {
+    view.setColorFilter(getAssociatedColor(popularity, view.context))
+    view.setImageDrawable(getDrawablePopularity(popularity, view.context))
+}
+
 
 private fun getAssociatedColor(popularity: Popularity, context: Context): Int {
     return when (popularity) {
